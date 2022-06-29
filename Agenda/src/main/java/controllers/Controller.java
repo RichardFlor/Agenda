@@ -7,12 +7,14 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import models.DAO;
+import models.JavaBeans;
 
-@WebServlet(urlPatterns = { "/Controllers", "/main" })
+@WebServlet(urlPatterns = { "/Controllers", "/main", "/insert" })
 public class Controller extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	DAO dao = new DAO();
+	JavaBeans contato = new JavaBeans();
 
 	public Controller() {
 		super();
@@ -26,6 +28,11 @@ public class Controller extends HttpServlet {
 
 		if (action.equals("/main")) {
 			contatos(request, response);
+
+		} else if (action.equals("/insert")) {
+			novoContato(request, response);
+		}else {
+			response.sendRedirect("index.html");
 		}
 	}
 
@@ -33,5 +40,26 @@ public class Controller extends HttpServlet {
 	protected void contatos(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		response.sendRedirect("agenda.jsp");
+	}
+
+	//Novo Contato
+	protected void novoContato(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		
+		//teste de recebimento dos dados do Formulario
+		//System.out.println(request.getParameter("nome"));
+		//System.out.println(request.getParameter("telefone"));
+		//System.out.println(request.getParameter("email"));
+		
+		//Setar as variaveis JavaBeans
+		contato.setNome(request.getParameter("nome"));
+		contato.setTelefone(request.getParameter("telefone"));
+		contato.setEmail(request.getParameter("email"));
+		
+		//Invocar o método inserirContato passando o objeto contato
+		dao.inserirContato(contato);
+		
+		//Redirecionar para o documento agenda.jsp
+		response.sendRedirect("main");
 	}
 }
