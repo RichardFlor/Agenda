@@ -120,5 +120,31 @@ public class DAO {
 			
 		}
 	}
+	//Editar o contato
+	public void alterarContato(JavaBeans contato) {
+		String create = "update tblContatos set nome=?, telefone=?, email=? where idContato = ?";
+		try {
+			//Iniciando a conexão com o banco de daods
+			Connection conexao = conectar();
+			
+			//Preparar a query para ser executada no banco de dados 
+			PreparedStatement pst = conexao.prepareStatement(create);
+			
+			//Substituição do "?" pelos dados do contato
+			pst.setString(1, contato.getNome());
+			pst.setString(2, contato.getTelefone());
+			pst.setString(3, contato.getEmail());
+			pst.setString(4, contato.getIdContato());
+			
+			//Executar o update
+			pst.executeUpdate();
+			
+			//Finalizar a conexao
+			conexao.close();
+			
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+	}
 
 }
