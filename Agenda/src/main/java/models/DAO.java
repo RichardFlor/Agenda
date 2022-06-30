@@ -27,7 +27,7 @@ public class DAO {
 		}
 	}
 
-	// CRUD CREATE
+	 /**----------CRUD CREATE---------**/
 	public void inserirContato(JavaBeans contato) {
 		String create = "insert into tblContatos(nome, telefone, email) values (?,?,?)";
 		try {
@@ -53,7 +53,7 @@ public class DAO {
 		}
 	}
 
-	// CRUD READ
+	 /**----------CRUD READ----------**/
 	public ArrayList<JavaBeans> listarContatos() {
 		// Criando objeto para acessar a classe JavaBeans
 		ArrayList<JavaBeans> contatos = new ArrayList<>();
@@ -86,6 +86,38 @@ public class DAO {
 		} catch (Exception e) {
 			System.out.println(e);
 			return null;
+		}
+	}
+	
+	/**----------CRUD UPADATE----------**/
+	//Selecionar o contato
+	public void selecionarContato(JavaBeans contato) {
+		String read2 = "select * from tblContatos where idContato = ?";
+		try {
+			//Iniciando a conexão com o banco de daods
+			Connection conexao = conectar();
+			
+			//Preparar a query para ser executada no banco de dados 
+			PreparedStatement pst = conexao.prepareStatement(read2);
+			
+			//Substituição do "?" pelo id do contato
+			pst.setString(1, contato.getIdContato());
+			
+			//Trazer as informações do banco deste contato para exibir no formulário de edição
+			ResultSet rs = pst.executeQuery();
+			
+			while(rs.next()) {
+				
+				//Setar as variaveis JavaBeans
+				contato.setIdContato(rs.getString(1));
+				contato.setNome(rs.getString(2));
+				contato.setTelefone(rs.getString(3));
+				contato.setEmail(rs.getString(4));
+			}
+			conexao.close();
+		} catch (Exception e) {
+			System.out.println(e);
+			
 		}
 	}
 

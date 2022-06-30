@@ -12,7 +12,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import models.DAO;
 import models.JavaBeans;
 
-@WebServlet(urlPatterns = { "/Controllers", "/main", "/insert" })
+@WebServlet(urlPatterns = { "/Controllers", "/main", "/insert", "/select" })
 public class Controller extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -34,7 +34,9 @@ public class Controller extends HttpServlet {
 
 		} else if (action.equals("/insert")) {
 			novoContato(request, response);
-		}else {
+		} else if (action.equals("/select")) {
+			listarContato(request, response);
+		} else {
 			response.sendRedirect("index.html");
 		}
 	}
@@ -42,42 +44,75 @@ public class Controller extends HttpServlet {
 	// Listar Contatos
 	protected void contatos(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		//Criando um objeto que irá receber os dados JavaBeans
+		// Criando um objeto que irá receber os dados JavaBeans
 		ArrayList<JavaBeans> lista = dao.listarContatos();
-		
-			//Teste de recebimento da lista
-			//		for (int i = 0; i < lista.size(); i++) {
-			//			System.out.println(lista.get(i).getIdContato());
-			//			System.out.println(lista.get(i).getNome());
-			//			System.out.println(lista.get(i).getTelefone());
-			//			System.out.println(lista.get(i).getEmail());
-			//		}
-		
-		//Encaminhar a lista ao documento agenda.jsp
+
+		// Teste de recebimento da lista
+		// for (int i = 0; i < lista.size(); i++) {
+		// System.out.println(lista.get(i).getIdContato());
+		// System.out.println(lista.get(i).getNome());
+		// System.out.println(lista.get(i).getTelefone());
+		// System.out.println(lista.get(i).getEmail());
+		// }
+
+		// Encaminhar a lista ao documento agenda.jsp
 		request.setAttribute("contatos", lista);
 		RequestDispatcher rs = request.getRequestDispatcher("agenda.jsp");
 		rs.forward(request, response);
-		
+
 	}
 
-	//Novo Contato
+	// Novo Contato
 	protected void novoContato(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		
-		//teste de recebimento dos dados do Formulario
-		//System.out.println(request.getParameter("nome"));
-		//System.out.println(request.getParameter("telefone"));
-		//System.out.println(request.getParameter("email"));
-		
-		//Setar as variaveis JavaBeans
+
+		// teste de recebimento dos dados do Formulario
+		// System.out.println(request.getParameter("nome"));
+		// System.out.println(request.getParameter("telefone"));
+		// System.out.println(request.getParameter("email"));
+
+		// Setar as variaveis JavaBeans
 		contato.setNome(request.getParameter("nome"));
 		contato.setTelefone(request.getParameter("telefone"));
 		contato.setEmail(request.getParameter("email"));
-		
-		//Invocar o método inserirContato passando o objeto contato
+
+		// Invocar o método inserirContato passando o objeto contato
 		dao.inserirContato(contato);
-		
-		//Redirecionar para o documento agenda.jsp
+
+		// Redirecionar para o documento agenda.jsp
 		response.sendRedirect("main");
+	}
+
+	// Editar Contato
+	protected void listarContato(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		// Recebimento do id do contato que será editado
+		String idContato = request.getParameter("idContato");
+		// System.out.println(idContato); // verificar o recebimento do id do contato q
+		// sera editado
+
+		// Setar a variavel JavaBeans
+		contato.setIdContato(idContato);
+
+		// Executar o método selecionarContato (classe DAO)
+		dao.selecionarContato(contato);
+
+		// Teste de recebimento
+		// System.out.println(contato.getIdContato());
+		// System.out.println(contato.getNome());
+		// System.out.println(contato.getTelefone());
+		// System.out.println(contato.getEmail());
+
+		// Setar os atributos do formulario com o conteudo JavaBeans
+		request.setAttribute("idContato", contato.getIdContato());
+		request.setAttribute("nome", contato.getNome());
+		request.setAttribute("telefone", contato.getTelefone());
+		request.setAttribute("email", contato.getEmail());
+
+		// Encaminhar ao documento editar.jsp
+		RequestDispatcher rd = request.getRequestDispatcher("editar.jsp");
+		rd.forward(request, response);
+		//
+
 	}
 }

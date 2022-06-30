@@ -9,6 +9,7 @@
     
 %>
 
+
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -28,6 +29,7 @@
 				<th>Nome</th>
 				<th>Telefone</th>
 				<th>E-mail</th>
+				<th>Opções</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -37,6 +39,7 @@
 					<td><%=lista.get(i).getNome() %></td>
 					<td><%=lista.get(i).getTelefone() %></td>
 					<td><%=lista.get(i).getEmail() %></td>
+					<td><a href="select?idContato=<%=lista.get(i).getIdContato()%>" class="Botao1">Editar</a></td>
 				</tr>
 			<%}%>
 		</tbody>
