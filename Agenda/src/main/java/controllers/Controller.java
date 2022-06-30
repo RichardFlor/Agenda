@@ -6,6 +6,9 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
+
 import models.DAO;
 import models.JavaBeans;
 
@@ -39,7 +42,17 @@ public class Controller extends HttpServlet {
 	// Listar Contatos
 	protected void contatos(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		response.sendRedirect("agenda.jsp");
+		//Criando um objeto que irá receber os dados JavaBeans
+		ArrayList<JavaBeans> lista = dao.listarContatos();
+		
+		//Teste de recebimento da lista
+			//		for (int i = 0; i < lista.size(); i++) {
+			//			System.out.println(lista.get(i).getIdContato());
+			//			System.out.println(lista.get(i).getNome());
+			//			System.out.println(lista.get(i).getTelefone());
+			//			System.out.println(lista.get(i).getEmail());
+			//		}
+		
 	}
 
 	//Novo Contato
