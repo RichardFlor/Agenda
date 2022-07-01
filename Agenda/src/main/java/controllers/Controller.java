@@ -12,7 +12,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import models.DAO;
 import models.JavaBeans;
 
-@WebServlet(urlPatterns = { "/Controllers", "/main", "/insert", "/select", "/update" })
+@WebServlet(urlPatterns = { "/Controllers", "/main", "/insert", "/select", "/update", "/delete" })
 public class Controller extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -38,6 +38,8 @@ public class Controller extends HttpServlet {
 			listarContato(request, response);
 		} else if (action.equals("/update")) {
 			editarContato(request, response);
+		} else if (action.equals("/delete")) {
+			removerContato(request, response);
 		} else {
 			response.sendRedirect("index.html");
 		}
@@ -121,22 +123,40 @@ public class Controller extends HttpServlet {
 			throws ServletException, IOException {
 
 		// Teste de recebimento de dados do formulario
-		//		System.out.println(request.getParameter("idContato"));
-		//		System.out.println(request.getParameter("nome"));
-		//		System.out.println(request.getParameter("telefone"));
-		//		System.out.println(request.getParameter("email"));
-		
-		//Setar as variaveis JavaBeans
+		// System.out.println(request.getParameter("idContato"));
+		// System.out.println(request.getParameter("nome"));
+		// System.out.println(request.getParameter("telefone"));
+		// System.out.println(request.getParameter("email"));
+
+		// Setar as variaveis JavaBeans
 		contato.setIdContato(request.getParameter("idContato"));
 		contato.setNome(request.getParameter("nome"));
 		contato.setTelefone(request.getParameter("telefone"));
 		contato.setEmail(request.getParameter("email"));
-		
-		//Executar o metodo alterarContato
+
+		// Executar o metodo alterarContato
 		dao.alterarContato(contato);
-		
-		//Redirecionar para o documento agenda.jsp (atualizando as alteraçoes)
+
+		// Redirecionar para o documento agenda.jsp (atualizando as alteraçoes)
 		response.sendRedirect("main");
-		
+
+	}
+
+	// Remover um contato
+	protected void removerContato(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+
+		// Recebimento do id do contato que será excluido (validador.js)
+		String idContato = request.getParameter("idContato");
+		// System.out.println(idContato);
+
+		// Setar a variavel idContato JavaBeans
+		contato.setIdContato(idContato);
+
+		// Executar o metodo deletarCOntato (DAO) passando o objeto contato
+		dao.deletarContato(contato);
+
+		// Redirecionar para o documento agenda.jsp (atualizando as alteraçoes)
+		response.sendRedirect("main");
 	}
 }

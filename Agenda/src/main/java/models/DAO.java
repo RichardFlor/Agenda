@@ -27,7 +27,7 @@ public class DAO {
 		}
 	}
 
-	 /**----------CRUD CREATE---------**/
+	/** ----------CRUD CREATE--------- **/
 	public void inserirContato(JavaBeans contato) {
 		String create = "insert into tblContatos(nome, telefone, email) values (?,?,?)";
 		try {
@@ -53,7 +53,7 @@ public class DAO {
 		}
 	}
 
-	 /**----------CRUD READ----------**/
+	/** ----------CRUD READ---------- **/
 	public ArrayList<JavaBeans> listarContatos() {
 		// Criando objeto para acessar a classe JavaBeans
 		ArrayList<JavaBeans> contatos = new ArrayList<>();
@@ -88,27 +88,28 @@ public class DAO {
 			return null;
 		}
 	}
-	
-	/**----------CRUD UPADATE----------**/
-	//Selecionar o contato
+
+	/** ----------CRUD UPADATE---------- **/
+	// Selecionar o contato
 	public void selecionarContato(JavaBeans contato) {
 		String read2 = "select * from tblContatos where idContato = ?";
 		try {
-			//Iniciando a conexão com o banco de daods
+			// Iniciando a conexão com o banco de daods
 			Connection conexao = conectar();
-			
-			//Preparar a query para ser executada no banco de dados 
+
+			// Preparar a query para ser executada no banco de dados
 			PreparedStatement pst = conexao.prepareStatement(read2);
-			
-			//Substituição do "?" pelo id do contato
+
+			// Substituição do "?" pelo id do contato
 			pst.setString(1, contato.getIdContato());
-			
-			//Trazer as informações do banco deste contato para exibir no formulário de edição
+
+			// Trazer as informações do banco deste contato para exibir no formulário de
+			// edição
 			ResultSet rs = pst.executeQuery();
-			
-			while(rs.next()) {
-				
-				//Setar as variaveis JavaBeans
+
+			while (rs.next()) {
+
+				// Setar as variaveis JavaBeans
 				contato.setIdContato(rs.getString(1));
 				contato.setNome(rs.getString(2));
 				contato.setTelefone(rs.getString(3));
@@ -117,31 +118,56 @@ public class DAO {
 			conexao.close();
 		} catch (Exception e) {
 			System.out.println(e);
-			
+
 		}
 	}
-	//Editar o contato
+
+	// Editar o contato
 	public void alterarContato(JavaBeans contato) {
 		String create = "update tblContatos set nome=?, telefone=?, email=? where idContato = ?";
 		try {
-			//Iniciando a conexão com o banco de daods
+			// Iniciando a conexão com o banco de daods
 			Connection conexao = conectar();
-			
-			//Preparar a query para ser executada no banco de dados 
+
+			// Preparar a query para ser executada no banco de dados
 			PreparedStatement pst = conexao.prepareStatement(create);
-			
-			//Substituição do "?" pelos dados do contato
+
+			// Substituição do "?" pelos dados do contato
 			pst.setString(1, contato.getNome());
 			pst.setString(2, contato.getTelefone());
 			pst.setString(3, contato.getEmail());
 			pst.setString(4, contato.getIdContato());
-			
-			//Executar o update
+
+			// Executar o update
 			pst.executeUpdate();
-			
-			//Finalizar a conexao
+
+			// Finalizar a conexao
 			conexao.close();
-			
+
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+	}
+
+	/** ----------CRUD DELETE---------- **/
+	public void deletarContato(JavaBeans contato) {
+		String delete = "delete from tblContatos where idContato = ?";
+		try {
+			// Iniciando a conexão com o banco de daods
+			Connection conexao = conectar();
+
+			// Preparar a query para ser executada no banco de dados
+			PreparedStatement pst = conexao.prepareStatement(delete);
+
+			// Substituição do "?" pelos dados do contato
+			pst.setString(1, contato.getIdContato());
+
+			// Executar o update
+			pst.executeUpdate();
+
+			// Finalizar a conexao
+			conexao.close();
+
 		} catch (Exception e) {
 			System.out.println(e);
 		}
