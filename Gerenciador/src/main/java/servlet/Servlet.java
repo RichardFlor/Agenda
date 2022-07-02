@@ -24,6 +24,5 @@ public class Servlet extends HttpServlet {
 		out.println("</html>");
 		
 		System.out.println("O Servlet foi chamado"); 
-
 	}
 }
