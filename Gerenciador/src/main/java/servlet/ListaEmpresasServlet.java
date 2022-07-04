@@ -4,12 +4,12 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 
+import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-
 
 public class ListaEmpresasServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -19,17 +19,13 @@ public class ListaEmpresasServlet extends HttpServlet {
 
 		Banco banco = new Banco();
 		List<Empresa> lista = banco.getEmpresas();
-		
-		PrintWriter out = response.getWriter();	
-		out.println("<html><body>");
-		out.println("<ul>");
-		
-		for (Empresa empresa : lista) {
-			out.println("<li>" + empresa.getNome()+ "</li>");
-		}
-		
-		out.println("<ul>");
-		out.println("</body></html>");
+
+		request.setAttribute("empresas", lista);
+
+		RequestDispatcher rd = request.getRequestDispatcher("/listaEmpresas.jsp");
+
+		rd.forward(request, response);
+
 	}
 
 }
