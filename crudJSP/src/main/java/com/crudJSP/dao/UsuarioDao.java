@@ -51,7 +51,28 @@ public class UsuarioDao {
 	
 	
 	
-	
+	public static int updateUsuario(Usuario usuario) {
+		int status = 0;
+		
+		try {
+			Connection con = getConnection();
+			PreparedStatement ps = con.prepareStatement("UPDATE usuario SET nome=?,"
+					+ "password=?, email=?, sexo=?, pais=? WHERE id=?");
+			
+			ps.setString(1, usuario.getNome());
+			ps.setString(2, usuario.getPassword());
+			ps.setString(3, usuario.getEmail());
+			ps.setString(4, usuario.getSexo());
+			ps.setString(5, usuario.getPais());
+			ps.setInt(6, usuario.getId());
+
+			status = ps.executeUpdate();
+			
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		return status;
+	}
 	
 	
 	

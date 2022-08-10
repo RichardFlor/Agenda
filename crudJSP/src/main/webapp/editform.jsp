@@ -17,11 +17,43 @@
 	
 	<h1>Edição de usuário</h1>
 	
-	<form action="" method="post">
-		<input type="text" name="id" value="<%=usuario.getId()%>"/>
+	<form action="editusuario.jsp" method="post">
+		<input type="hidden" name="id" value="<%=usuario.getId()%>"/>
 		<table>
 			<tr>
-				
+				<td>Nome: </td>
+				<td><input type="text" name="nome" value="<%=usuario.getNome()%>"/></td>	
+			</tr>
+			<tr>
+				<td>Password: </td>
+				<td><input type="password" name="password" value="<%=usuario.getPassword()%>"/></td>	
+			</tr>
+			<tr>
+				<td>Email: </td>
+				<td><input type="email" name="email" value="<%=usuario.getEmail()%>"/></td>	
+			</tr>
+			<tr>
+				<td>Sexo: </td>
+				<td><input type="radio" name="sexo" value="masculino"/>Masculino
+					<input type="radio" name="sexo" value="feminino"/>Feminino
+				</td>	
+			</tr>
+			<tr>
+				<td>País: </td>
+				<td>
+					<select name="pais">
+						<option>Brasil</option>
+						<option>Japão</option>
+						<option>Portugal</option>
+						<option>EUA</option>
+						<option>Outro</option>
+					</select>
+				</td>	
+			</tr>
+			<tr>
+				<td colspan="2">
+					<input type="submit" value="Editar usuario"></input>
+				</td>
 			</tr>
 		</table>
 	
