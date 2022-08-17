@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<%@page import="javax.servlet.jsp.tagext.TryCatchFinally"%>
 <html>
 <head>
 <meta charset="ISO-8859-1">
@@ -10,10 +11,22 @@
 	<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 	<h1>Listagem de Usuários</h1>
-
+	
 	<%
-	List<Usuario> list = UsuarioDao.getAllUsuarios();
+	String pageid = request.getParameter("page");
+	int id = Integer.parseInt(pageid);
+	int total = 5;
+
+	if (id==1){} 
+	else {
+		id = id -1;
+		id = id * total + 1;
+	}
+
+	//List<Usuario> list = UsuarioDao.getAllUsuarios();
+	List<Usuario> list = UsuarioDao.getRecords(id, total);
 	request.setAttribute("list", list);
+	
 	%>
 
 	<table border="1">
@@ -41,6 +54,12 @@
 
 		</c:forEach>
 	</table>
+	<br>
+	<a href="viewusuarios.jsp?page=1">1</a>
+	<a href="viewusuarios.jsp?page=2">2</a>
+	<a href="viewusuarios.jsp?page=3">3</a>
+
+
 	<br>
 	<a href="addusuarioform.jsp">Adicionar novo Usuário</a>
 
